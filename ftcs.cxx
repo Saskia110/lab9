@@ -33,7 +33,7 @@ int main(){
 
   initialize(u0,dx, xmin,N);
 
-  writeToFile(u0, "u_0", dx, xmin, N);
+  writeToFile(u0, "p_0", dx, xmin, N);
 
   for(int i=1; i<=Na; i++)
   {
@@ -49,7 +49,7 @@ int main(){
       // however do not copy values, be more clever ;)
    }
    strm.str("");
-   strm << "u_" << i;
+   strm << "p_" << i;
    writeToFile(u0, strm.str(), dx, xmin, N);
   }
 
@@ -85,10 +85,10 @@ void writeToFile(const double* const u, const string s, const double dx,
    out.close();
 }
 void upwind(const double V, double dt, const double dx,double* u0, double* u1, const int N){
-  u1[0] = -V*dt/dx*(u0[0]-u0[N-1])+u0[0];// N-1 ist der letzte rechte punkt ( der, der neben dem ersten linken ist )
+  u1[0] = -V*dt/dx*(u0[1]-u0[N-1])+u0[0];// N-1 ist der letzte rechte punkt ( der, der neben dem ersten linken ist )
   
   for (int i = 1; i<N; i++){  
-  u1[i] = -V*dt/dx*(u0[i]-u0[i-1])+u0[i];
+  u1[i] = -V*dt/(2*dx)*(u0[i+1]-u0[i-1])+u0[i];
   
  }
  
